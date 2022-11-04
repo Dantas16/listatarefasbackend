@@ -3,6 +3,10 @@ const app = express();
 const port = 3200;
 
 app.use(express.json());
+app.use(function(req, resp, next) {
+    console.log('LOG: Acesso: ', new Date());
+    next();
+})
 
 
 const login = {
@@ -14,14 +18,19 @@ const login = {
 }
 
 function verificaLoginMidleware(req, resp, next) {
+    console.log(req.params)
     const { usuario } = req.params;
 
-    if (usuario == 1 && logado == 1) {
+    if (1 == 1) {
         next();
     } else {
         resp.status(401).send({ error: 'Não autorizado' })
     }
 }
+
+app.get('helloworld', (req, resp) => {
+    resp.send('Hellow world')
+})
 
 app.get('/tarefas', verificaLoginMidleware,  (req, resp) => {
     const tarefas = [{
